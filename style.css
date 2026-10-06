@@ -1,0 +1,582 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  --bg1: #ffd6e8;
+  --bg2: #ffe9f3;
+  --accent: #ff5fa2;
+  --accent-dark: #e63b87;
+  --text: #6b2145;
+}
+
+/* Har page ka apna pastel color */
+body[data-page="1"] { --bg1:#ffd6e8; --bg2:#fff0f6; --accent:#ff5fa2; --accent-dark:#e63b87; }
+body[data-page="2"] { --bg1:#e6d9ff; --bg2:#f7f2ff; --accent:#a97bff; --accent-dark:#8a55f0; --text:#40236b; }
+body[data-page="3"] { --bg1:#ffe0cc; --bg2:#fff4ec; --accent:#ff8a5c; --accent-dark:#f06a35; --text:#6b3521; }
+body[data-page="4"] { --bg1:#d4f3e6; --bg2:#f0fbf6; --accent:#3fc59a; --accent-dark:#26a47b; --text:#1e5a45; }
+body[data-page="5"] { --bg1:#d6e8ff; --bg2:#f0f6ff; --accent:#5aa2ff; --accent-dark:#3b83e6; --text:#21456b; }
+body[data-page="6"] { --bg1:#fff3c4; --bg2:#fffbe8; --accent:#ffb52e; --accent-dark:#e69a0a; --text:#6b4f12; }
+body[data-page="7"] { --bg1:#16103d; --bg2:#3a2a82; --accent:#ffd36b; --accent-dark:#ffb52e; --text:#ffeaf4; }
+body[data-page="8"] { --bg1:#ffc2e0; --bg2:#fff0f8; --accent:#ff3f94; --accent-dark:#d9207a; --text:#6b1f4a; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: var(--bg1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px 70px;
+  overflow-x: hidden;
+  animation: pageIn .7s ease both;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg1));
+  background-size: 300% 300%;
+  animation: bgShift 14s ease-in-out infinite alternate;
+}
+body.leaving { animation: pageOut .45s ease both; }
+
+@keyframes bgShift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+@keyframes pageIn  { from { opacity: 0; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes pageOut { to   { opacity: 0; transform: translateX(-40px) scale(.97); } }
+
+.hidden { display: none !important; }
+
+/* ---------- Floating hearts / stars ---------- */
+.hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.hearts span {
+  position: absolute;
+  bottom: -40px;
+  opacity: .75;
+  animation: floatUp linear forwards;
+}
+@keyframes floatUp { to { transform: translateY(-110vh) rotate(25deg); opacity: 0; } }
+
+.twinkle {
+  position: absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+@keyframes twinkle { 0%, 100% { opacity: .2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.8); } }
+
+/* ---------- Card ---------- */
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, .78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 32px;
+  padding: 28px 24px 30px;
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
+  border: 3px solid rgba(255, 255, 255, .9);
+}
+
+h1 {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1.3;
+  color: var(--accent-dark);
+  margin-bottom: 14px;
+}
+
+p { font-size: 1.02rem; line-height: 1.7; margin: 16px 0 22px; }
+.hint { font-size: .92rem; opacity: .85; margin: 10px 0 12px; line-height: 1.5; }
+.reveal { font-size: 1.02rem; line-height: 1.7; margin: 16px 0 22px; font-weight: 500; animation: slideIn .6s ease both; }
+.question { font-size: 1.2rem; font-weight: 600; margin: 14px 0 6px; }
+.typed { min-height: 3.6em; font-size: 1rem; line-height: 1.7; margin: 10px 0 14px; }
+.typed:not(.done)::after { content: '▍'; opacity: .6; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- GIF frame ---------- */
+.gif-frame {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .15);
+  background: #fff;
+  transform: rotate(-2deg);
+  transition: transform .3s;
+}
+.gif-frame.small { max-width: 180px; }
+.gif-frame:hover { transform: rotate(2deg) scale(1.03); }
+.gif-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- Polaroid ---------- */
+.polaroid {
+  width: 100%;
+  max-width: 230px;
+  margin: 18px auto 6px;
+  background: #fff;
+  padding: 10px 10px 40px;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
+  transform: rotate(3deg);
+  position: relative;
+  transition: transform .3s;
+  cursor: pointer;
+}
+.polaroid:hover { transform: rotate(-2deg) scale(1.04); }
+.polaroid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border-radius: 4px; }
+.polaroid::after {
+  content: attr(data-caption);
+  position: absolute;
+  bottom: 9px; left: 0; right: 0;
+  font-family: 'Pacifico', cursive;
+  font-size: .95rem;
+  color: var(--accent-dark);
+}
+
+/* Agar gif/pic na mile to ye placeholder dikhega */
+.placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  font-size: .85rem;
+  background: repeating-linear-gradient(45deg, #fff, #fff 10px, #fff0f6 10px, #fff0f6 20px);
+  color: var(--accent-dark);
+}
+.face .placeholder { font-size: .7rem; min-height: 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border: none;
+  border-radius: 50px;
+  padding: 14px 34px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .2);
+  transition: transform .2s, box-shadow .2s;
+  animation: pulse 1.8s ease-in-out infinite;
+  user-select: none;
+  touch-action: manipulation;
+}
+.btn:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 12px 26px rgba(0, 0, 0, .25); }
+.btn:active { transform: scale(.95); }
+.btn.pop { animation: popIn .6s cubic-bezier(.34, 1.56, .64, 1) both, pulse 1.8s ease-in-out .6s infinite; }
+body[data-page="7"] .btn { color: #3a2a82; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Progress dots ---------- */
+.dots {
+  position: fixed;
+  bottom: 22px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 2;
+}
+.dots i {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+  transition: all .3s;
+}
+.dots i.active { background: var(--accent-dark); transform: scale(1.5); }
+
+/* ---------- Effects ---------- */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9;
+  font-size: 20px;
+  animation: burst .8s ease-out forwards;
+}
+@keyframes burst { to { transform: translate(var(--dx), var(--dy)) scale(.4); opacity: 0; } }
+
+.confetti {
+  position: fixed;
+  top: -14px;
+  width: 10px; height: 14px;
+  z-index: 20;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall { to { transform: translate(var(--dx), 105vh) rotate(720deg); } }
+
+.float-emoji {
+  position: fixed;
+  font-size: 28px;
+  pointer-events: none;
+  z-index: 9;
+  animation: floatEmoji 1s ease-out forwards;
+}
+@keyframes floatEmoji { to { transform: translateY(-120px) scale(1.4); opacity: 0; } }
+
+.music-btn {
+  position: fixed;
+  top: 14px; right: 14px;
+  z-index: 30;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, .88);
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+
+/* =========================================================
+   PAGE 1 — Envelope
+   ========================================================= */
+.env-wrap {
+  position: relative;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 6px 0 4px;
+}
+.env-hint {
+  position: absolute;
+  top: 30px; left: 0; right: 0;
+  font-weight: 600;
+  animation: bounceY 1.2s ease-in-out infinite;
+}
+@keyframes bounceY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+.envelope {
+  position: relative;
+  width: 260px;
+  height: 170px;
+  cursor: pointer;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .2));
+  transition: transform .3s;
+}
+.envelope:hover { transform: scale(1.03); }
+.envelope > div { position: absolute; }
+.env-back  { inset: 0; background: var(--accent-dark); border-radius: 8px; }
+.letter {
+  left: 12%; right: 12%; top: 8px; height: 160px;
+  background: #fff;
+  border-radius: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: transform .9s cubic-bezier(.34, 1.3, .64, 1) .45s;
+}
+.letter .gif-frame { max-width: 130px; transform: none; border-width: 3px; border-radius: 16px; }
+.letter-note { display: grid; justify-items: center; gap: 8px; color: var(--accent-dark); font-size: .85rem; }
+.letter-note span { font-size: 2.8rem; animation: stickerFloat 1.8s ease-in-out infinite; }
+.env-front {
+  inset: 0;
+  background: var(--accent);
+  border-radius: 8px;
+  z-index: 3;
+  clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+}
+.env-flap {
+  left: 0; right: 0; top: 0;
+  height: 55%;
+  background: linear-gradient(var(--accent-dark), var(--accent));
+  z-index: 4;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform .6s ease, z-index 0s .3s;
+}
+.seal {
+  left: 50%; top: 44%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  font-size: 30px;
+  transition: opacity .3s;
+}
+.envelope.open { cursor: default; }
+.envelope.open:hover { transform: none; }
+.envelope.open .env-flap { transform: rotateX(180deg); z-index: 1; }
+.envelope.open .letter { transform: translateY(-120px); }
+.envelope.open .seal { opacity: 0; }
+
+/* =========================================================
+   PAGE 2 — Dil pakdo game
+   ========================================================= */
+.score {
+  display: inline-block;
+  background: #fff;
+  border-radius: 50px;
+  padding: 6px 18px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+  margin: 6px 0 4px;
+}
+.game-area {
+  position: relative;
+  height: 240px;
+  margin: 8px 0 14px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .55);
+  border: 2px dashed var(--accent);
+  touch-action: manipulation;
+}
+.catch {
+  position: absolute;
+  top: 0;
+  font-size: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  animation: fall linear forwards;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .2));
+}
+@keyframes fall { from { transform: translateY(-50px); } to { transform: translateY(260px); } }
+
+/* =========================================================
+   PAGE 3 — Scratch card
+   ========================================================= */
+.scratch {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  margin: 8px auto 10px;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .15);
+  background: #fff;
+}
+.scratch .under { position: absolute; inset: 0; }
+.scratch .under img, .scratch .under .placeholder { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scratch canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+  transition: opacity .8s;
+}
+.scratch canvas.done { opacity: 0; pointer-events: none; }
+.love-sticker {
+  position: relative;
+  min-height: 100%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 42%, #fff 0 18%, #ffe0ee 19% 58%, #ffc5df 100%);
+}
+.sticker-heart { font-size: 86px; animation: stickerBeat 1.2s ease-in-out infinite; filter: drop-shadow(0 8px 12px rgba(214, 32, 122, .2)); }
+.sticker-spark { position: absolute; top: 18%; right: 20%; font-size: 34px; animation: stickerTwinkle 1.6s ease-in-out infinite; }
+.sticker-caption { color: #8f3561; font-weight: 600; font-size: .9rem; text-align: center; }
+@keyframes stickerBeat { 0%, 100% { transform: scale(1) rotate(-5deg); } 50% { transform: scale(1.14) rotate(5deg); } }
+@keyframes stickerTwinkle { 0%, 100% { transform: scale(.7) rotate(-15deg); opacity: .55; } 50% { transform: scale(1.15) rotate(15deg); opacity: 1; } }
+@keyframes stickerFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* =========================================================
+   PAGE 4 — Flip cards
+   ========================================================= */
+.flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 14px; }
+.flip { perspective: 800px; cursor: pointer; border: 0; padding: 0; background: none; font: inherit; }
+.flip-inner {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  transition: transform .7s;
+  transform-style: preserve-3d;
+}
+.flip.on .flip-inner { transform: rotateY(180deg); }
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.face.emoji { font-size: 3.2rem; background: linear-gradient(135deg, var(--bg1), var(--bg2)); }
+.face.back {
+  transform: rotateY(180deg);
+  background: #fff;
+  padding: 10px;
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--accent-dark);
+  line-height: 1.4;
+}
+.flip:not(.on) .face.front::after {
+  content: 'tap 👆';
+  position: absolute;
+  bottom: 6px; right: 8px;
+  font-size: .7rem;
+  background: rgba(255, 255, 255, .9);
+  color: var(--accent-dark);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* =========================================================
+   PAGE 5 — Bhaagta "Nahi" button
+   ========================================================= */
+.yn { position: relative; height: 110px; margin: 6px 0 10px; }
+.yn .btn { position: absolute; animation: none; white-space: nowrap; transition: left .25s, top .25s, font-size .2s; }
+#yes { left: 6%; top: 30px; }
+#no  { left: 58%; top: 30px; background: linear-gradient(135deg, #b4b4c6, #8a8aa0); }
+
+/* =========================================================
+   PAGE 6 — Hug meter
+   ========================================================= */
+.meter {
+  width: 100%;
+  height: 22px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, .85);
+  overflow: hidden;
+  margin: 14px 0 6px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .15);
+}
+.fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 50px;
+  transition: width .15s;
+}
+.pct { font-weight: 600; color: var(--accent-dark); margin-bottom: 14px; }
+.wiggle { animation: wiggle .35s; }
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  25% { transform: rotate(5deg) scale(1.05); }
+  75% { transform: rotate(-6deg) scale(1.05); }
+}
+
+/* =========================================================
+   PAGE 7 — Raat ka aasman, dua ke sitare
+   ========================================================= */
+body[data-page="7"] .card { background: rgba(24, 16, 72, .62); border-color: rgba(255, 255, 255, .22); }
+body[data-page="7"] h1 { color: #ffd6ec; }
+body[data-page="7"] .gif-frame { border-color: rgba(255, 255, 255, .85); }
+
+.sky {
+  position: relative;
+  height: 150px;
+  margin: 12px 0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .07);
+  border: 1px dashed rgba(255, 255, 255, .3);
+}
+.star-btn {
+  position: absolute;
+  font-size: 34px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  animation: starPulse 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px #ffd36b);
+}
+.star-btn.used { animation: none; opacity: .35; filter: none; cursor: default; }
+@keyframes starPulse { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.25) rotate(15deg); } }
+
+.wishes { list-style: none; text-align: left; margin: 8px 0 16px; min-height: 20px; }
+.wishes li {
+  background: rgba(255, 255, 255, .12);
+  border-radius: 14px;
+  padding: 8px 14px;
+  margin: 6px 0;
+  font-size: .92rem;
+  animation: slideIn .5s ease both;
+}
+.shooting {
+  position: fixed;
+  top: 12%; left: -10%;
+  width: 120px; height: 3px;
+  background: linear-gradient(90deg, transparent, #fff);
+  transform: rotate(25deg);
+  z-index: 5;
+  pointer-events: none;
+  animation: shoot 1.4s ease-in forwards;
+}
+@keyframes shoot { to { transform: translate(120vw, 55vh) rotate(25deg); opacity: 0; } }
+
+/* =========================================================
+   PAGE 8 — Gubare
+   ========================================================= */
+.balloon {
+  position: fixed;
+  bottom: -90px;
+  font-size: 46px;
+  cursor: pointer;
+  z-index: 3;
+  user-select: none;
+  animation: rise linear forwards;
+}
+@keyframes rise {
+  0%   { transform: translateY(0) rotate(-6deg); }
+  50%  { transform: translateY(-60vh) rotate(6deg); }
+  100% { transform: translateY(-120vh) rotate(-6deg); }
+}
+.balloon-area {
+  position: relative;
+  height: 170px;
+  margin: 10px 0 14px;
+  overflow: hidden;
+  border: 2px dashed var(--accent);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .48);
+}
+.game-balloon {
+  position: absolute;
+  z-index: 1;
+  border: 0;
+  padding: 4px;
+  background: transparent;
+  font-size: 42px;
+  cursor: pointer;
+  animation: balloonBob 1.4s ease-in-out infinite;
+  touch-action: manipulation;
+}
+.game-balloon:active { transform: scale(.65); }
+@keyframes balloonBob { 0%, 100% { transform: translateY(3px) rotate(-6deg); } 50% { transform: translateY(-5px) rotate(6deg); } }
+.btn:disabled { cursor: default; opacity: .75; }
+
+@media (max-width: 400px) {
+  h1 { font-size: 1.65rem; }
+  .card { padding: 22px 16px 26px; }
+  .envelope { width: 230px; height: 150px; }
+  .letter { height: 140px; }
+}
